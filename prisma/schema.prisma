@@ -1,0 +1,53 @@
+// Sheep Tycoon - Database Schema
+// PostgreSQL + Prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Lobby {
+  id            String        @id @default(cuid())
+  hostName      String        @map("host_name")
+  status        LobbyStatus   @default(WAITING)
+  maxPlayers    Int           @default(6) @map("max_players")
+  startingMoney Int           @default(2000) @map("starting_money")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  players       LobbyPlayer[]
+}
+
+enum LobbyStatus {
+  WAITING
+  STARTING
+}
+
+model LobbyPlayer {
+  id           String   @id @default(cuid())
+  lobbyId      String   @map("lobby_id")
+  displayName  String   @map("display_name")
+  ready        Boolean  @default(false)
+  joinedAt     DateTime @default(now()) @map("joined_at")
+  connectionId String?  @map("connection_id")
+  lobby        Lobby    @relation(fields: [lobbyId], references: [id], onDelete: Cascade)
+
+  @@unique([lobbyId, displayName])
+  @@map("lobby_players")
+}
+
+model Game {
+  id          String     @id @default(cuid())
+  lobbyId     String?    @map("lobby_id")
+  gameState   Json       @map("game_state")
+  status      GameStatus @default(ACTIVE)
+  currentTurn Int        @default(0) @map("current_turn")
+  createdAt   DateTime   @default(now()) @map("created_at")
+}
+
+enum GameStatus {
+  ACTIVE
+  ENDED
+}
