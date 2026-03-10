@@ -9,7 +9,7 @@ import { getImprovementCost, IRRIGATION_COST } from '@/lib/game/improvements';
 
 function getTotalSheep(gameState: GameState, player: PlayerState): number {
   const station = gameState.board.stations[player.stationId];
-  const paddockSheep = station?.paddocks.reduce((s, p) => s + p.sheepCount, 0) ?? 0;
+  const paddockSheep = station?.paddocks?.reduce((s, p) => s + p.sheepCount, 0) ?? 0;
   return player.sheepInHand + paddockSheep;
 }
 
