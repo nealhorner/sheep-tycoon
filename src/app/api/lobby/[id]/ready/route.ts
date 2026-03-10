@@ -1,17 +1,14 @@
-import { NextResponse } from "next/server";
-import { z } from "zod";
-import { prisma } from "@/lib/db/prisma";
-import { broadcastToLobby } from "@/lib/sse";
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
+import { prisma } from '@/lib/db/prisma';
+import { broadcastToLobby } from '@/lib/sse';
 
 const readySchema = z.object({
   displayName: z.string().min(1).max(50),
   ready: z.boolean(),
 });
 
-export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id: lobbyId } = await params;
     const body = await request.json().catch(() => ({}));
@@ -20,16 +17,13 @@ export async function POST(
     const player = await prisma.lobbyPlayer.findFirst({
       where: {
         lobbyId,
-        displayName: { equals: displayName, mode: "insensitive" },
+        displayName: { equals: displayName, mode: 'insensitive' },
       },
       include: { lobby: true },
     });
 
     if (!player) {
-      return NextResponse.json(
-        { error: "Player not found in lobby" },
-        { status: 404 },
-      );
+      return NextResponse.json({ error: 'Player not found in lobby' }, { status: 404 });
     }
 
     await prisma.lobbyPlayer.update({
@@ -39,12 +33,12 @@ export async function POST(
 
     const lobby = await prisma.lobby.findUnique({
       where: { id: lobbyId },
-      include: { players: { orderBy: { joinedAt: "asc" } } },
+      include: { players: { orderBy: { joinedAt: 'asc' } } },
     });
 
     if (lobby) {
       broadcastToLobby(lobbyId, {
-        type: "lobby_update",
+        type: 'lobby_update',
         lobby: {
           id: lobby.id,
           hostName: lobby.hostName,
@@ -64,15 +58,9 @@ export async function POST(
     return NextResponse.json({ success: true, ready });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: error.flatten().fieldErrors },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: error.flatten().fieldErrors }, { status: 400 });
     }
-    console.error("Failed to toggle ready:", error);
-    return NextResponse.json(
-      { error: "Failed to toggle ready" },
-      { status: 500 },
-    );
+    console.error('Failed to toggle ready:', error);
+    return NextResponse.json({ error: 'Failed to toggle ready' }, { status: 500 });
   }
 }

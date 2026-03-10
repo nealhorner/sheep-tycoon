@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -11,9 +11,8 @@ export default function Home() {
             Sheep Tycoon
           </h1>
           <p className="mt-4 max-w-2xl text-xl text-outback-700">
-            Build your sheep station, manage your flock, and battle droughts,
-            floods, and fluctuating wool prices to become the most successful
-            Sheep Tycoon in the outback.
+            Build your sheep station, manage your flock, and battle droughts, floods, and fluctuating wool prices to
+            become the most successful Sheep Tycoon in the outback.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
@@ -34,49 +33,39 @@ export default function Home() {
 
       {/* How to Play */}
       <section className="mx-auto max-w-6xl px-6 py-16">
-        <h2 className="font-display text-3xl font-bold text-outback-900">
-          How to Play
-        </h2>
+        <h2 className="font-display text-3xl font-bold text-outback-900">How to Play</h2>
         <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           <div className="rounded-2xl bg-white/80 p-6 shadow-lg backdrop-blur">
             <h3 className="font-semibold text-ochre-700">Roll & Move</h3>
             <p className="mt-2 text-outback-600">
-              Roll two dice and move around the board. Land on spaces to collect
-              wool, sell sheep, buy improvements, or draw event cards.
+              Roll two dice and move around the board. Land on spaces to collect wool, sell sheep, buy improvements, or
+              draw event cards.
             </p>
           </div>
           <div className="rounded-2xl bg-white/80 p-6 shadow-lg backdrop-blur">
-            <h3 className="font-semibold text-ochre-700">
-              Improve Your Station
-            </h3>
+            <h3 className="font-semibold text-ochre-700">Improve Your Station</h3>
             <p className="mt-2 text-outback-600">
-              Irrigate your paddocks, build shearing sheds, fences, and wells.
-              Each station has five paddocks to develop.
+              Irrigate your paddocks, build shearing sheds, fences, and wells. Each station has five paddocks to
+              develop.
             </p>
           </div>
           <div className="rounded-2xl bg-white/80 p-6 shadow-lg backdrop-blur">
-            <h3 className="font-semibold text-ochre-700">
-              Survive the Outback
-            </h3>
+            <h3 className="font-semibold text-ochre-700">Survive the Outback</h3>
             <p className="mt-2 text-outback-600">
-              Face droughts, floods, bushfires, and disease. Adapt to
-              fluctuating wool and livestock prices. The most successful station
-              wins.
+              Face droughts, floods, bushfires, and disease. Adapt to fluctuating wool and livestock prices. The most
+              successful station wins.
             </p>
           </div>
         </div>
         <p className="mt-8 text-outback-600">
-          2–6 players • 1–2 hours • Coorumbene, Wanbanalong, Emu Plains, Mt
-          Mitchell, Warramboo, Coolibah Creek — choose your station and stake
-          your claim.
+          2–6 players • 1–2 hours • Coorumbene, Wanbanalong, Emu Plains, Mt Mitchell, Warramboo, Coolibah Creek — choose
+          your station and stake your claim.
         </p>
       </section>
 
       {/* Footer */}
       <footer className="border-t border-outback-200 bg-outback-50/50 py-8">
-        <div className="mx-auto max-w-6xl px-6 text-center text-sm text-outback-500">
-          Sheep Tycoon
-        </div>
+        <div className="mx-auto max-w-6xl px-6 text-center text-sm text-outback-500">Sheep Tycoon</div>
       </footer>
     </main>
   );

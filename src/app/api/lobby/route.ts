@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
-import { z } from "zod";
-import { v4 as uuidv4 } from "uuid";
-import { prisma } from "@/lib/db/prisma";
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
+import { v4 as uuidv4 } from 'uuid';
+import { prisma } from '@/lib/db/prisma';
 
 const createLobbySchema = z.object({
   hostName: z.string().min(1).max(50),
@@ -12,8 +12,7 @@ const createLobbySchema = z.object({
 export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => ({}));
-    const { hostName, maxPlayers, startingMoney } =
-      createLobbySchema.parse(body);
+    const { hostName, maxPlayers, startingMoney } = createLobbySchema.parse(body);
 
     const shortId = uuidv4().slice(0, 8);
 
@@ -21,7 +20,7 @@ export async function POST(request: Request) {
       data: {
         id: shortId,
         hostName,
-        status: "WAITING",
+        status: 'WAITING',
         maxPlayers,
         startingMoney,
       },
@@ -42,15 +41,9 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: error.flatten().fieldErrors },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: error.flatten().fieldErrors }, { status: 400 });
     }
-    console.error("Failed to create lobby:", error);
-    return NextResponse.json(
-      { error: "Failed to create lobby" },
-      { status: 500 },
-    );
+    console.error('Failed to create lobby:', error);
+    return NextResponse.json({ error: 'Failed to create lobby' }, { status: 500 });
   }
 }

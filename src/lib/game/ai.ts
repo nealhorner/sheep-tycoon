@@ -1,17 +1,10 @@
-import type { GameState } from "./types";
-import { processRoll, processMove } from "./engine";
-import {
-  resolveBuyImprovement,
-  resolvePlaceImprovement,
-  resolveIrrigate,
-} from "./improvements";
-import { IRRIGATION_COST } from "./improvements";
-import type { ImprovementTileType } from "./types";
+import type { GameState } from './types';
+import { processRoll, processMove } from './engine';
+import { resolveBuyImprovement, resolvePlaceImprovement, resolveIrrigate } from './improvements';
+import { IRRIGATION_COST } from './improvements';
+import type { ImprovementTileType } from './types';
 
-function aiDecideBuy(
-  state: GameState,
-  playerIndex: number,
-): ImprovementTileType | null {
+function aiDecideBuy(state: GameState, playerIndex: number): ImprovementTileType | null {
   const player = state.players[playerIndex];
   const station = state.board.stations[player.stationId];
   if (!player || !station) return null;
@@ -19,26 +12,21 @@ function aiDecideBuy(
   const canAfford = (cost: number) => player.money >= cost;
 
   if (canAfford(300)) {
-    const hasShed = station.paddocks.some(
-      (p) => p.improvement === "shearing_shed",
-    );
+    const hasShed = station.paddocks.some((p) => p.improvement === 'shearing_shed');
     const sheepCount = station.paddocks.reduce((s, p) => s + p.sheepCount, 0);
-    if (!hasShed && sheepCount >= 3) return "shearing_shed";
+    if (!hasShed && sheepCount >= 3) return 'shearing_shed';
   }
   if (canAfford(200)) {
     const unirrigated = station.paddocks.filter((p) => !p.irrigated);
-    if (unirrigated.length > 0) return "irrigation";
+    if (unirrigated.length > 0) return 'irrigation';
   }
-  if (canAfford(150)) return "fence";
-  if (canAfford(250)) return "well";
+  if (canAfford(150)) return 'fence';
+  if (canAfford(250)) return 'well';
 
   return null;
 }
 
-function aiDecideIrrigate(
-  state: GameState,
-  playerIndex: number,
-): number | null {
+function aiDecideIrrigate(state: GameState, playerIndex: number): number | null {
   const player = state.players[playerIndex];
   const station = state.board.stations[player.stationId];
   if (!player || player.money < IRRIGATION_COST || !station) return null;
@@ -53,17 +41,14 @@ function aiDecideIrrigate(
   return null;
 }
 
-function aiDecidePlace(
-  state: GameState,
-  playerIndex: number,
-): { tile: ImprovementTileType; paddock: number } | null {
+function aiDecidePlace(state: GameState, playerIndex: number): { tile: ImprovementTileType; paddock: number } | null {
   const player = state.players[playerIndex];
   const station = state.board.stations[player.stationId];
   if (!player || player.improvementTiles.length === 0 || !station) return null;
 
   const tile = player.improvementTiles[0];
   for (let i = 0; i < station.paddocks.length; i++) {
-    if (station.paddocks[i].improvement === "none") {
+    if (station.paddocks[i].improvement === 'none') {
       return { tile, paddock: i };
     }
   }
@@ -77,15 +62,12 @@ export function runAITurn(state: GameState): GameState {
 
   let s = state;
 
-  if (s.phase === "roll") {
+  if (s.phase === 'roll') {
     s = processRoll(s);
     s = processMove(s, playerIndex);
   }
 
-  while (
-    s.currentPlayerIndex === playerIndex &&
-    (s.phase === "action" || s.phase === "station")
-  ) {
+  while (s.currentPlayerIndex === playerIndex && (s.phase === 'action' || s.phase === 'station')) {
     const currentPlayer = s.players[playerIndex];
 
     const place = aiDecidePlace(s, playerIndex);
@@ -114,7 +96,7 @@ export function runAITurn(state: GameState): GameState {
     s = {
       ...s,
       currentPlayerIndex: nextIndex,
-      phase: "roll",
+      phase: 'roll',
       diceRoll: null,
     };
   }

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function CreateLobbyPage() {
-  const [hostName, setHostName] = useState("");
+  const [hostName, setHostName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -13,28 +13,25 @@ export default function CreateLobbyPage() {
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     if (!hostName.trim()) {
-      setError("Please enter your name");
+      setError('Please enter your name');
       return;
     }
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/lobby", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/lobby', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ hostName: hostName.trim() }),
       });
       const data = await res.json();
-      if (!res.ok)
-        throw new Error(
-          data.error?.hostName?.[0] || data.error || "Failed to create lobby",
-        );
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("lobbyDisplayName", hostName.trim());
+      if (!res.ok) throw new Error(data.error?.hostName?.[0] || data.error || 'Failed to create lobby');
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('lobbyDisplayName', hostName.trim());
       }
       router.push(`/lobby/${data.lobbyId}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -43,18 +40,11 @@ export default function CreateLobbyPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-outback-50 to-outback-100 px-6 py-16">
       <div className="mx-auto max-w-md">
-        <h1 className="font-display text-3xl font-bold text-outback-900">
-          Create Lobby
-        </h1>
-        <p className="mt-2 text-outback-600">
-          Create a new game lobby and invite friends to join.
-        </p>
+        <h1 className="font-display text-3xl font-bold text-outback-900">Create Lobby</h1>
+        <p className="mt-2 text-outback-600">Create a new game lobby and invite friends to join.</p>
         <form onSubmit={handleCreate} className="mt-8 space-y-4">
           <div>
-            <label
-              htmlFor="hostName"
-              className="block text-sm font-medium text-outback-700"
-            >
+            <label htmlFor="hostName" className="block text-sm font-medium text-outback-700">
               Your name
             </label>
             <input
@@ -74,7 +64,7 @@ export default function CreateLobbyPage() {
               disabled={loading}
               className="flex-1 rounded-xl bg-ochre-500 px-6 py-3 font-semibold text-white transition hover:bg-ochre-600 disabled:opacity-50"
             >
-              {loading ? "Creating…" : "Create Lobby"}
+              {loading ? 'Creating…' : 'Create Lobby'}
             </button>
             <Link
               href="/lobby"

@@ -1,15 +1,11 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function LobbyPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-outback-50 to-outback-100 px-6 py-16">
       <div className="mx-auto max-w-md text-center">
-        <h1 className="font-display text-3xl font-bold text-outback-900">
-          Multiplayer
-        </h1>
-        <p className="mt-2 text-outback-600">
-          Create a lobby to host a game, or join an existing one with a code.
-        </p>
+        <h1 className="font-display text-3xl font-bold text-outback-900">Multiplayer</h1>
+        <p className="mt-2 text-outback-600">Create a lobby to host a game, or join an existing one with a code.</p>
         <div className="mt-10 flex flex-col gap-4">
           <Link
             href="/lobby/create"

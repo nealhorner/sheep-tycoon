@@ -1,10 +1,7 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db/prisma";
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/db/prisma';
 
-export async function GET(
-  _request: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id: lobbyId } = await params;
 
@@ -12,13 +9,13 @@ export async function GET(
       where: { id: lobbyId },
       include: {
         players: {
-          orderBy: { joinedAt: "asc" },
+          orderBy: { joinedAt: 'asc' },
         },
       },
     });
 
     if (!lobby) {
-      return NextResponse.json({ error: "Lobby not found" }, { status: 404 });
+      return NextResponse.json({ error: 'Lobby not found' }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -35,7 +32,7 @@ export async function GET(
       })),
     });
   } catch (error) {
-    console.error("Failed to get lobby:", error);
-    return NextResponse.json({ error: "Failed to get lobby" }, { status: 500 });
+    console.error('Failed to get lobby:', error);
+    return NextResponse.json({ error: 'Failed to get lobby' }, { status: 500 });
   }
 }

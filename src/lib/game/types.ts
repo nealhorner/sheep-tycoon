@@ -1,26 +1,26 @@
 // Sheep Tycoon game types
 
 export const STATION_NAMES = [
-  "Coorumbene",
-  "Wanbanalong",
-  "Emu Plains",
-  "Mt Mitchell",
-  "Warramboo",
-  "Coolibah Creek",
+  'Coorumbene',
+  'Wanbanalong',
+  'Emu Plains',
+  'Mt Mitchell',
+  'Warramboo',
+  'Coolibah Creek',
 ] as const;
 
 export type StationName = (typeof STATION_NAMES)[number];
 
 export type TrackSpaceType =
-  | "wool_sale"
-  | "collect_wool"
-  | "sell_sheep"
-  | "buy_improvement"
-  | "tucker_bag"
-  | "stock_sale"
-  | "stud_ram"
-  | "loan"
-  | "blank";
+  | 'wool_sale'
+  | 'collect_wool'
+  | 'sell_sheep'
+  | 'buy_improvement'
+  | 'tucker_bag'
+  | 'stock_sale'
+  | 'stud_ram'
+  | 'loan'
+  | 'blank';
 
 export interface TrackSpace {
   index: number;
@@ -32,7 +32,7 @@ export interface Paddock {
   index: number;
   irrigated: boolean;
   sheepCount: number;
-  improvement: "none" | "shearing_shed" | "fence" | "well" | "irrigation";
+  improvement: 'none' | 'shearing_shed' | 'fence' | 'well' | 'irrigation';
 }
 
 export interface Station {
@@ -53,11 +53,7 @@ export interface PlayerState {
   hasPassedWoolSale: boolean;
 }
 
-export type ImprovementTileType =
-  | "shearing_shed"
-  | "fence"
-  | "well"
-  | "irrigation";
+export type ImprovementTileType = 'shearing_shed' | 'fence' | 'well' | 'irrigation';
 
 export interface Card {
   id: string;
@@ -71,13 +67,7 @@ export interface MarketState {
   sheepPrice: number;
 }
 
-export type GamePhase =
-  | "roll"
-  | "move"
-  | "action"
-  | "station"
-  | "event"
-  | "next_turn";
+export type GamePhase = 'roll' | 'move' | 'action' | 'station' | 'event' | 'next_turn';
 
 export interface GameState {
   board: {

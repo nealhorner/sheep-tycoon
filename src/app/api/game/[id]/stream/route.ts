@@ -1,10 +1,7 @@
-import { addGameListener } from "@/lib/sse";
-import { prisma } from "@/lib/db/prisma";
+import { addGameListener } from '@/lib/sse';
+import { prisma } from '@/lib/db/prisma';
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id: gameId } = await params;
 
   const game = await prisma.game.findUnique({
@@ -12,7 +9,7 @@ export async function GET(
   });
 
   if (!game) {
-    return new Response("Game not found", { status: 404 });
+    return new Response('Game not found', { status: 404 });
   }
 
   const stream = new ReadableStream({
@@ -44,7 +41,7 @@ export async function GET(
         clearInterval(keepAlive);
       };
 
-      request.signal?.addEventListener("abort", () => {
+      request.signal?.addEventListener('abort', () => {
         cleanup();
       });
     },
@@ -52,9 +49,9 @@ export async function GET(
 
   return new Response(stream, {
     headers: {
-      "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache, no-transform",
-      Connection: "keep-alive",
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache, no-transform',
+      Connection: 'keep-alive',
     },
   });
 }

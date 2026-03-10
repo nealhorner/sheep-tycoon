@@ -4,10 +4,7 @@ type LobbyConnection = { write: (data: string) => void };
 
 const lobbyConnections = new Map<string, Set<LobbyConnection>>();
 
-export function addLobbyListener(
-  lobbyId: string,
-  conn: LobbyConnection,
-): () => void {
+export function addLobbyListener(lobbyId: string, conn: LobbyConnection): () => void {
   if (!lobbyConnections.has(lobbyId)) {
     lobbyConnections.set(lobbyId, new Set());
   }
@@ -23,7 +20,7 @@ export function addLobbyListener(
 export function broadcastToLobby(lobbyId: string, data: unknown): void {
   const set = lobbyConnections.get(lobbyId);
   if (!set) return;
-  const msg = typeof data === "string" ? data : JSON.stringify(data);
+  const msg = typeof data === 'string' ? data : JSON.stringify(data);
   set.forEach((conn) => {
     try {
       conn.write(msg);
@@ -37,10 +34,7 @@ type GameConnection = { write: (data: string) => void };
 
 const gameConnections = new Map<string, Set<GameConnection>>();
 
-export function addGameListener(
-  gameId: string,
-  conn: GameConnection,
-): () => void {
+export function addGameListener(gameId: string, conn: GameConnection): () => void {
   if (!gameConnections.has(gameId)) {
     gameConnections.set(gameId, new Set());
   }
@@ -56,7 +50,7 @@ export function addGameListener(
 export function broadcastToGame(gameId: string, data: unknown): void {
   const set = gameConnections.get(gameId);
   if (!set) return;
-  const msg = typeof data === "string" ? data : JSON.stringify(data);
+  const msg = typeof data === 'string' ? data : JSON.stringify(data);
   set.forEach((conn) => {
     try {
       conn.write(msg);

@@ -1,13 +1,13 @@
-import { describe, it, expect } from "vitest";
-import { getTrackPositions } from "./trackUtils";
+import { describe, it, expect } from 'vitest';
+import { getTrackPositions } from './trackUtils';
 
-describe("getTrackPositions", () => {
-  it("returns correct count of positions", () => {
+describe('getTrackPositions', () => {
+  it('returns correct count of positions', () => {
     const points = getTrackPositions(100, 100, 50, 24);
     expect(points).toHaveLength(24);
   });
 
-  it("positions lie on circle of given radius", () => {
+  it('positions lie on circle of given radius', () => {
     const cx = 100;
     const cy = 100;
     const radius = 50;
@@ -18,7 +18,7 @@ describe("getTrackPositions", () => {
     });
   });
 
-  it("first point is at top of circle", () => {
+  it('first point is at top of circle', () => {
     const cx = 100;
     const cy = 100;
     const radius = 50;
