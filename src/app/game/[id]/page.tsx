@@ -4,8 +4,14 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import Board from '@/components/Board/Board';
-import type { GameState, ImprovementTileType } from '@/lib/game/types';
+import type { GameState, ImprovementTileType, PlayerState } from '@/lib/game/types';
 import { getImprovementCost, IRRIGATION_COST } from '@/lib/game/improvements';
+
+function getTotalSheep(gameState: GameState, player: PlayerState): number {
+  const station = gameState.board.stations[player.stationId];
+  const paddockSheep = station?.paddocks.reduce((s, p) => s + p.sheepCount, 0) ?? 0;
+  return player.sheepInHand + paddockSheep;
+}
 
 export default function GamePage() {
   const params = useParams();
@@ -141,6 +147,25 @@ export default function GamePage() {
           <div />
         </div>
 
+        <div className="mb-6 flex flex-wrap gap-3">
+          {gameState.players.map((p, i) => (
+            <div
+              key={p.id}
+              className={`rounded-xl border-2 px-4 py-3 shadow-sm ${
+                i === gameState.currentPlayerIndex ? 'border-ochre-500 bg-ochre-50' : 'border-outback-200 bg-white/90'
+              }`}
+            >
+              <p className="font-semibold text-outback-800">
+                {p.displayName}
+                {p.isAI && ' (AI)'}
+              </p>
+              <p className="mt-1 text-sm text-outback-600">
+                {getTotalSheep(gameState, p)} sheep · ${p.money}
+              </p>
+            </div>
+          ))}
+        </div>
+
         <div className="flex flex-col gap-6 lg:flex-row">
           <div className="min-w-0 flex-1">
             <div className="overflow-hidden rounded-xl bg-white/80 p-2 shadow-lg backdrop-blur sm:p-4">
@@ -158,26 +183,6 @@ export default function GamePage() {
                 Dice: <span className="font-medium">{gameState.diceRoll}</span>
               </p>
             )}
-
-            <div className="mt-6 space-y-4">
-              {gameState.players.map((p, i) => (
-                <div
-                  key={p.id}
-                  className={`rounded-lg border-2 p-4 ${
-                    i === gameState.currentPlayerIndex
-                      ? 'border-ochre-500 bg-ochre-50'
-                      : 'border-outback-200 bg-outback-50/50'
-                  }`}
-                >
-                  <p className="font-semibold text-outback-800">
-                    {p.displayName}
-                    {p.isAI && ' (AI)'}
-                    {i === gameState.currentPlayerIndex && <span className="ml-1 text-ochre-600">•</span>}
-                  </p>
-                  <p className="mt-1 text-sm text-outback-600">${p.money}</p>
-                </div>
-              ))}
-            </div>
 
             {myStation && isCurrentPlayer && (
               <div className="mt-6">
