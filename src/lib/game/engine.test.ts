@@ -47,7 +47,7 @@ describe('createInitialGameState', () => {
 
     state.board.stations.forEach((station) => {
       station.paddocks.forEach((pad) => {
-        expect(pad.sheepCount).toBe(3);
+        expect(pad.sheepCount).toBe(600);
         expect(pad.irrigated).toBe(false);
         expect(pad.improvement).toBe('none');
       });
