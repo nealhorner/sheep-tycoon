@@ -11,7 +11,7 @@ const actionSchema = z.object({
   action: z.enum(['roll', 'move', 'end_turn', 'buy_improvement', 'place_improvement', 'irrigate', 'ai_tick']),
   payload: z
     .object({
-      tileType: z.enum(['shearing_shed', 'fence', 'well', 'irrigation']).optional(),
+      tileType: z.enum(['shearing_shed', 'irrigation']).optional(),
       paddockIndex: z.number().optional(),
     })
     .optional(),

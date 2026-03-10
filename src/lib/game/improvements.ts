@@ -3,8 +3,6 @@ import { addEvent } from './events';
 
 const IMPROVEMENT_COSTS: Record<ImprovementTileType, number> = {
   shearing_shed: 300,
-  fence: 150,
-  well: 250,
   irrigation: 200,
 };
 

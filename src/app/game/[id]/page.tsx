@@ -134,7 +134,7 @@ export default function GamePage() {
   const currentPlayer = gameState.players[gameState.currentPlayerIndex];
   const isCurrentPlayer = currentPlayer && !currentPlayer.isAI;
   const myStation = currentPlayer && gameState.board.stations[currentPlayer.stationId];
-  const improvementTypes: ImprovementTileType[] = ['shearing_shed', 'fence', 'well', 'irrigation'];
+  const improvementTypes: ImprovementTileType[] = ['shearing_shed', 'irrigation'];
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-outback-50 to-outback-100 p-4 md:p-6">

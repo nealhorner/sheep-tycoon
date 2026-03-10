@@ -108,15 +108,15 @@ describe('POST /api/game/[id]/action', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'buy_improvement',
-          payload: { tileType: 'fence' },
+          payload: { tileType: 'shearing_shed' },
         }),
       }),
       { params: Promise.resolve({ id: 'game-1' }) }
     );
     const data = await res.json();
     expect(res.status).toBe(200);
-    expect(data.gameState.players[0].money).toBe(1850);
-    expect(data.gameState.players[0].improvementTiles).toContain('fence');
+    expect(data.gameState.players[0].money).toBe(1700);
+    expect(data.gameState.players[0].improvementTiles).toContain('shearing_shed');
   });
 
   it('irrigate sets paddock irrigated', async () => {
