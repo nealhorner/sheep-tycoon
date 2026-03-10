@@ -13,7 +13,7 @@ export function createDecks(): {
   const fireFighting = makeCard(
     "tucker_bag",
     "Fire Fighting Equipment",
-    "Prevent bushfire damage"
+    "Prevent bushfire damage",
   );
 
   const tuckerBagTemplates = [
@@ -30,8 +30,8 @@ export function createDecks(): {
       makeCard(
         "tucker_bag",
         tuckerBagTemplates[i % tuckerBagTemplates.length].title,
-        tuckerBagTemplates[i % tuckerBagTemplates.length].effect
-      )
+        tuckerBagTemplates[i % tuckerBagTemplates.length].effect,
+      ),
     ),
   ];
 
@@ -46,12 +46,12 @@ export function createDecks(): {
     makeCard(
       "stock_sale",
       stockSaleTemplates[i % stockSaleTemplates.length].title,
-      stockSaleTemplates[i % stockSaleTemplates.length].effect
-    )
+      stockSaleTemplates[i % stockSaleTemplates.length].effect,
+    ),
   );
 
   const studRam: Card[] = Array.from({ length: 5 }, () =>
-    makeCard("stud_ram", "Stud Ram", "Breed extra sheep")
+    makeCard("stud_ram", "Stud Ram", "Breed extra sheep"),
   );
 
   return { tuckerBag, stockSale, studRam };
@@ -59,7 +59,7 @@ export function createDecks(): {
 
 export function drawCard<T extends Card>(
   deck: T[],
-  count = 1
+  count = 1,
 ): { card: T | null; deck: T[] } {
   if (deck.length === 0) return { card: null, deck };
   const [card, ...rest] = deck;

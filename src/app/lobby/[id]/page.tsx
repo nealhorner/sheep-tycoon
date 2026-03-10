@@ -83,7 +83,7 @@ export default function LobbyPage() {
 
   async function handleReady(displayName: string) {
     const player = lobby?.players.find(
-      (p) => p.displayName.toLowerCase() === displayName.toLowerCase()
+      (p) => p.displayName.toLowerCase() === displayName.toLowerCase(),
     );
     if (!player) return;
     setActionLoading(true);
@@ -103,10 +103,10 @@ export default function LobbyPage() {
           ? {
               ...prev,
               players: prev.players.map((p) =>
-                p.id === player.id ? { ...p, ready: data.ready } : p
+                p.id === player.id ? { ...p, ready: data.ready } : p,
               ),
             }
-          : null
+          : null,
       );
     } catch {
       setError("Failed to update ready status");
@@ -135,7 +135,8 @@ export default function LobbyPage() {
 
   const allReady =
     lobby && lobby.players.length >= 2 && lobby.players.every((p) => p.ready);
-  const isHost = lobby && displayName.toLowerCase() === lobby.hostName.toLowerCase();
+  const isHost =
+    lobby && displayName.toLowerCase() === lobby.hostName.toLowerCase();
 
   if (loading) {
     return (
@@ -204,21 +205,21 @@ export default function LobbyPage() {
                 >
                   <span className="font-medium text-outback-800">
                     {p.displayName}
-                    {p.displayName.toLowerCase() === lobby.hostName.toLowerCase() && (
-                      <span className="ml-2 text-xs text-ochre-600">(Host)</span>
+                    {p.displayName.toLowerCase() ===
+                      lobby.hostName.toLowerCase() && (
+                      <span className="ml-2 text-xs text-ochre-600">
+                        (Host)
+                      </span>
                     )}
                   </span>
                   <span
-                    className={
-                      p.ready
-                        ? "text-green-600"
-                        : "text-outback-400"
-                    }
+                    className={p.ready ? "text-green-600" : "text-outback-400"}
                   >
                     {p.ready ? "Ready" : "Not ready"}
                   </span>
                   {displayName &&
-                    p.displayName.toLowerCase() === displayName.toLowerCase() && (
+                    p.displayName.toLowerCase() ===
+                      displayName.toLowerCase() && (
                       <button
                         onClick={() => handleReady(displayName)}
                         disabled={actionLoading}
@@ -227,7 +228,7 @@ export default function LobbyPage() {
                         {lobby.players.find(
                           (x) =>
                             x.displayName.toLowerCase() ===
-                            displayName.toLowerCase()
+                            displayName.toLowerCase(),
                         )?.ready
                           ? "Unready"
                           : "Ready"}
@@ -242,9 +243,7 @@ export default function LobbyPage() {
             Starting money: ${lobby.startingMoney}
           </p>
 
-          {error && (
-            <p className="mt-4 text-sm text-red-600">{error}</p>
-          )}
+          {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
 
           <div className="mt-8 flex gap-4">
             {isHost && (

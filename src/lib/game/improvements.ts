@@ -1,8 +1,4 @@
-import type {
-  GameState,
-  ImprovementTileType,
-  Paddock,
-} from "./types";
+import type { GameState, ImprovementTileType, Paddock } from "./types";
 import { addEvent } from "./events";
 
 const IMPROVEMENT_COSTS: Record<ImprovementTileType, number> = {
@@ -21,7 +17,7 @@ export function getImprovementCost(type: ImprovementTileType): number {
 export function resolveBuyImprovement(
   state: GameState,
   playerIndex: number,
-  tileType: ImprovementTileType
+  tileType: ImprovementTileType,
 ): GameState {
   const player = state.players[playerIndex];
   const cost = IMPROVEMENT_COSTS[tileType];
@@ -34,12 +30,12 @@ export function resolveBuyImprovement(
           money: p.money - cost,
           improvementTiles: [...p.improvementTiles, tileType],
         }
-      : p
+      : p,
   );
 
   return addEvent(
     { ...state, players: updatedPlayers },
-    `${player.displayName} bought ${tileType.replace("_", " ")}`
+    `${player.displayName} bought ${tileType.replace("_", " ")}`,
   );
 }
 
@@ -47,7 +43,7 @@ export function resolvePlaceImprovement(
   state: GameState,
   playerIndex: number,
   paddockIndex: number,
-  tileType: ImprovementTileType
+  tileType: ImprovementTileType,
 ): GameState {
   const player = state.players[playerIndex];
   if (!player || !player.improvementTiles.includes(tileType)) return state;
@@ -61,17 +57,17 @@ export function resolvePlaceImprovement(
     i === playerIndex
       ? {
           ...p,
-          improvementTiles: p.improvementTiles.filter((_, idx) => idx !== tileIdx),
+          improvementTiles: p.improvementTiles.filter(
+            (_, idx) => idx !== tileIdx,
+          ),
         }
-      : p
+      : p,
   );
 
   const stations = state.board.stations.map((s, si) => {
     if (si !== player.stationId) return s;
     const pads = s.paddocks.map((pad, pi) =>
-      pi === paddockIndex
-        ? { ...pad, improvement: tileType }
-        : pad
+      pi === paddockIndex ? { ...pad, improvement: tileType } : pad,
     );
     return { ...s, paddocks: pads };
   });
@@ -82,14 +78,14 @@ export function resolvePlaceImprovement(
       players: updatedPlayers,
       board: { ...state.board, stations },
     },
-    `${player.displayName} placed ${tileType.replace("_", " ")} on paddock ${paddockIndex + 1}`
+    `${player.displayName} placed ${tileType.replace("_", " ")} on paddock ${paddockIndex + 1}`,
   );
 }
 
 export function resolveIrrigate(
   state: GameState,
   playerIndex: number,
-  paddockIndex: number
+  paddockIndex: number,
 ): GameState {
   const player = state.players[playerIndex];
   if (!player || player.money < IRRIGATION_COST) return state;
@@ -99,13 +95,13 @@ export function resolveIrrigate(
   if (!paddock || paddock.irrigated) return state;
 
   const updatedPlayers = state.players.map((p, i) =>
-    i === playerIndex ? { ...p, money: p.money - IRRIGATION_COST } : p
+    i === playerIndex ? { ...p, money: p.money - IRRIGATION_COST } : p,
   );
 
   const stations = state.board.stations.map((s, si) => {
     if (si !== player.stationId) return s;
     const pads = s.paddocks.map((pad, pi) =>
-      pi === paddockIndex ? { ...pad, irrigated: true } : pad
+      pi === paddockIndex ? { ...pad, irrigated: true } : pad,
     );
     return { ...s, paddocks: pads };
   });
@@ -116,6 +112,6 @@ export function resolveIrrigate(
       players: updatedPlayers,
       board: { ...state.board, stations },
     },
-    `${player.displayName} irrigated paddock ${paddockIndex + 1}`
+    `${player.displayName} irrigated paddock ${paddockIndex + 1}`,
   );
 }

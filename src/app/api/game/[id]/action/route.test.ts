@@ -18,7 +18,9 @@ vi.mock("@/lib/db/prisma", () => ({
   },
 }));
 
-function makeGameState(overrides?: Partial<ReturnType<typeof createInitialGameState>>) {
+function makeGameState(
+  overrides?: Partial<ReturnType<typeof createInitialGameState>>,
+) {
   const state = createInitialGameState([
     { displayName: "Human", isAI: false },
     { displayName: "AI", isAI: true },
@@ -40,7 +42,7 @@ describe("POST /api/game/[id]/action", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "roll" }),
       }),
-      { params: Promise.resolve({ id: "xxx" }) }
+      { params: Promise.resolve({ id: "xxx" }) },
     );
     expect(res.status).toBe(404);
   });
@@ -60,7 +62,7 @@ describe("POST /api/game/[id]/action", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "roll" }),
       }),
-      { params: Promise.resolve({ id: "game-1" }) }
+      { params: Promise.resolve({ id: "game-1" }) },
     );
     const data = await res.json();
     expect(res.status).toBe(200);
@@ -84,7 +86,7 @@ describe("POST /api/game/[id]/action", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "end_turn" }),
       }),
-      { params: Promise.resolve({ id: "game-1" }) }
+      { params: Promise.resolve({ id: "game-1" }) },
     );
     const data = await res.json();
     expect(res.status).toBe(200);
@@ -111,7 +113,7 @@ describe("POST /api/game/[id]/action", () => {
           payload: { tileType: "fence" },
         }),
       }),
-      { params: Promise.resolve({ id: "game-1" }) }
+      { params: Promise.resolve({ id: "game-1" }) },
     );
     const data = await res.json();
     expect(res.status).toBe(200);
@@ -138,7 +140,7 @@ describe("POST /api/game/[id]/action", () => {
           payload: { paddockIndex: 0 },
         }),
       }),
-      { params: Promise.resolve({ id: "game-1" }) }
+      { params: Promise.resolve({ id: "game-1" }) },
     );
     const data = await res.json();
     expect(res.status).toBe(200);
@@ -162,7 +164,7 @@ describe("POST /api/game/[id]/action", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "roll" }),
       }),
-      { params: Promise.resolve({ id: "game-1" }) }
+      { params: Promise.resolve({ id: "game-1" }) },
     );
     expect(res.status).toBe(400);
   });

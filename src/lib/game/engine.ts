@@ -70,7 +70,7 @@ function createStations(): Station[] {
 
 export function createInitialGameState(
   playerConfigs: { displayName: string; isAI: boolean }[],
-  startingMoney = 2000
+  startingMoney = 2000,
 ): GameState {
   const trackSpaces = createTrack();
   const stations = createStations();
@@ -109,7 +109,8 @@ export function createInitialGameState(
 }
 
 export function processRoll(state: GameState): GameState {
-  const roll = Math.floor(Math.random() * 6) + 1 + Math.floor(Math.random() * 6) + 1;
+  const roll =
+    Math.floor(Math.random() * 6) + 1 + Math.floor(Math.random() * 6) + 1;
   return {
     ...state,
     diceRoll: roll,
@@ -117,10 +118,7 @@ export function processRoll(state: GameState): GameState {
   };
 }
 
-export function processMove(
-  state: GameState,
-  playerIndex: number
-): GameState {
+export function processMove(state: GameState, playerIndex: number): GameState {
   const player = state.players[playerIndex];
   if (!player || state.phase !== "move" || state.diceRoll === null) {
     return state;
@@ -138,7 +136,7 @@ export function processMove(
           trackPosition: newPosition,
           hasPassedWoolSale: p.hasPassedWoolSale || passedWoolSale,
         }
-      : p
+      : p,
   );
 
   let afterMove: GameState = {

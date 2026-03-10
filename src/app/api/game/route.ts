@@ -30,13 +30,13 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: error.flatten().fieldErrors },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.error("Failed to create game:", error);
     return NextResponse.json(
       { error: "Failed to create game" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

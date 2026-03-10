@@ -43,7 +43,9 @@ describe("resolvePlaceImprovement", () => {
     state.players[0].improvementTiles = ["shearing_shed"];
 
     const next = resolvePlaceImprovement(state, 0, 0, "shearing_shed");
-    expect(next.board.stations[0].paddocks[0].improvement).toBe("shearing_shed");
+    expect(next.board.stations[0].paddocks[0].improvement).toBe(
+      "shearing_shed",
+    );
     expect(next.players[0].improvementTiles).not.toContain("shearing_shed");
   });
 

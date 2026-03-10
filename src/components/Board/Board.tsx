@@ -83,7 +83,7 @@ export default function Board({
       centerX,
       centerY,
       trackRadius,
-      trackSpaces.length
+      trackSpaces.length,
     );
 
     ctx.strokeStyle = "#72644e";
@@ -126,7 +126,11 @@ export default function Board({
     // Draw 6 stations (hexagonal) in a ring
     const stationRadius = 55;
     const hexRadius = trackRadius * 0.35;
-    const stationHexes: { cx: number; cy: number; station: (typeof gameState.board.stations)[0] }[] = [];
+    const stationHexes: {
+      cx: number;
+      cy: number;
+      station: (typeof gameState.board.stations)[0];
+    }[] = [];
 
     for (let i = 0; i < 6; i++) {
       const angle = (Math.PI / 3) * i - Math.PI / 6;

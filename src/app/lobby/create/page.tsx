@@ -27,7 +27,7 @@ export default function CreateLobbyPage() {
       const data = await res.json();
       if (!res.ok)
         throw new Error(
-          data.error?.hostName?.[0] || data.error || "Failed to create lobby"
+          data.error?.hostName?.[0] || data.error || "Failed to create lobby",
         );
       if (typeof window !== "undefined") {
         sessionStorage.setItem("lobbyDisplayName", hostName.trim());

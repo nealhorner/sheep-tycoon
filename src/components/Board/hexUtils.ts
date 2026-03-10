@@ -5,7 +5,10 @@ export interface HexPoint {
   r: number;
 }
 
-export function hexToPixel(hex: HexPoint, size: number): { x: number; y: number } {
+export function hexToPixel(
+  hex: HexPoint,
+  size: number,
+): { x: number; y: number } {
   const x = size * (Math.sqrt(3) * hex.q + (Math.sqrt(3) / 2) * hex.r);
   const y = size * ((3 / 2) * hex.r);
   return { x, y };
@@ -14,7 +17,7 @@ export function hexToPixel(hex: HexPoint, size: number): { x: number; y: number 
 export function pixelToHex(
   x: number,
   y: number,
-  size: number
+  size: number,
 ): { q: number; r: number } {
   const q = (x / size - y / (size * 3)) * (1 / Math.sqrt(3));
   const r = (y * 2) / (size * 3);
@@ -37,7 +40,11 @@ function axialRound(q: number, r: number): { q: number; r: number } {
   return { q: rq, r: rr };
 }
 
-export function getHexCorners(centerX: number, centerY: number, size: number): { x: number; y: number }[] {
+export function getHexCorners(
+  centerX: number,
+  centerY: number,
+  size: number,
+): { x: number; y: number }[] {
   const corners: { x: number; y: number }[] = [];
   for (let i = 0; i < 6; i++) {
     const angle = (Math.PI / 3) * i;
