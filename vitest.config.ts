@@ -7,17 +7,17 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     include: [
-      "lib/**/*.test.ts",
-      "lib/**/*.test.tsx",
-      "app/api/**/*.test.ts",
-      "components/**/*.test.ts",
-      "components/**/*.test.tsx",
+      "src/lib/**/*.test.ts",
+      "src/lib/**/*.test.tsx",
+      "src/app/api/**/*.test.ts",
+      "src/components/**/*.test.ts",
+      "src/components/**/*.test.tsx",
     ],
     exclude: ["node_modules", ".next"],
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./"),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
 });
