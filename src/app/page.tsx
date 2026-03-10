@@ -65,7 +65,17 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-outback-200 bg-outback-50/50 py-8">
-        <div className="mx-auto max-w-6xl px-6 text-center text-sm text-outback-500">Sheep Tycoon</div>
+        <div className="mx-auto max-w-6xl px-6 text-center text-sm text-outback-500">
+          Sheep Tycoon ·{' '}
+          <a
+            href="https://github.com/nealhorner/sheep-tycoon"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-ochre-600 hover:text-ochre-700 underline transition"
+          >
+            GitHub
+          </a>
+        </div>
       </footer>
     </main>
   );

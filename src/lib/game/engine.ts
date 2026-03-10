@@ -3,6 +3,7 @@ import type { GameState, TrackSpace, Station, Paddock, PlayerState } from './typ
 import { STATION_NAMES } from './types';
 import { createDecks } from './cards';
 import {
+  addEvent,
   resolveCollectWool,
   resolveWoolSale,
   resolveTuckerBag,
@@ -10,6 +11,23 @@ import {
   resolveStudRam,
   resolveLoan,
 } from './events';
+
+const ROLL_WORDS: Record<number, string> = {
+  2: 'two',
+  3: 'three',
+  4: 'four',
+  5: 'five',
+  6: 'six',
+  7: 'seven',
+  8: 'eight',
+  9: 'nine',
+  10: 'ten',
+  11: 'eleven',
+  12: 'twelve',
+};
+
+const INITIAL_SHEEP_COUNT = 600;
+const INITIAL_MONEY = 2000;
 
 const TRACK_SPACE_TYPES: { type: TrackSpace['type']; label: string }[] = [
   { type: 'wool_sale', label: 'Wool Sale' },
@@ -49,7 +67,7 @@ function createPaddocks(): Paddock[] {
   return Array.from({ length: 5 }, (_, i) => ({
     index: i,
     irrigated: false,
-    sheepCount: 3,
+    sheepCount: INITIAL_SHEEP_COUNT,
     improvement: 'none',
   }));
 }
@@ -64,7 +82,7 @@ function createStations(): Station[] {
 
 export function createInitialGameState(
   playerConfigs: { displayName: string; isAI: boolean }[],
-  startingMoney = 2000
+  startingMoney = INITIAL_MONEY
 ): GameState {
   const trackSpaces = createTrack();
   const stations = createStations();
@@ -104,11 +122,16 @@ export function createInitialGameState(
 
 export function processRoll(state: GameState): GameState {
   const roll = Math.floor(Math.random() * 6) + 1 + Math.floor(Math.random() * 6) + 1;
-  return {
-    ...state,
-    diceRoll: roll,
-    phase: 'move',
-  };
+  const player = state.players[state.currentPlayerIndex];
+  const rollWord = ROLL_WORDS[roll] ?? String(roll);
+  return addEvent(
+    {
+      ...state,
+      diceRoll: roll,
+      phase: 'move',
+    },
+    `${player?.displayName ?? 'Player'} rolled ${rollWord}`
+  );
 }
 
 export function processMove(state: GameState, playerIndex: number): GameState {

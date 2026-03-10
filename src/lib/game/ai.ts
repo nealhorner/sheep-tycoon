@@ -20,8 +20,6 @@ function aiDecideBuy(state: GameState, playerIndex: number): ImprovementTileType
     const unirrigated = station.paddocks.filter((p) => !p.irrigated);
     if (unirrigated.length > 0) return 'irrigation';
   }
-  if (canAfford(150)) return 'fence';
-  if (canAfford(250)) return 'well';
 
   return null;
 }

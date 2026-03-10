@@ -32,7 +32,7 @@ export interface Paddock {
   index: number;
   irrigated: boolean;
   sheepCount: number;
-  improvement: 'none' | 'shearing_shed' | 'fence' | 'well' | 'irrigation';
+  improvement: 'none' | 'shearing_shed' | 'irrigation';
 }
 
 export interface Station {
@@ -53,7 +53,7 @@ export interface PlayerState {
   hasPassedWoolSale: boolean;
 }
 
-export type ImprovementTileType = 'shearing_shed' | 'fence' | 'well' | 'irrigation';
+export type ImprovementTileType = 'shearing_shed' | 'irrigation';
 
 export interface Card {
   id: string;

@@ -42,12 +42,12 @@ describe('createInitialGameState', () => {
     });
   });
 
-  it('each paddock starts with 3 sheep, no irrigation', () => {
+  it('each paddock starts with 600 sheep, no irrigation', () => {
     const state = createInitialGameState([{ displayName: 'P', isAI: false }]);
 
     state.board.stations.forEach((station) => {
       station.paddocks.forEach((pad) => {
-        expect(pad.sheepCount).toBe(3);
+        expect(pad.sheepCount).toBe(600);
         expect(pad.irrigated).toBe(false);
         expect(pad.improvement).toBe('none');
       });

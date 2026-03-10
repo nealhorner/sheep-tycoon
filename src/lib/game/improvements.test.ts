@@ -11,8 +11,6 @@ import { createInitialGameState } from './engine';
 describe('getImprovementCost', () => {
   it('returns correct costs', () => {
     expect(getImprovementCost('shearing_shed')).toBe(300);
-    expect(getImprovementCost('fence')).toBe(150);
-    expect(getImprovementCost('well')).toBe(250);
     expect(getImprovementCost('irrigation')).toBe(200);
   });
 });
@@ -52,15 +50,6 @@ describe('resolvePlaceImprovement', () => {
 
     const next = resolvePlaceImprovement(state, 0, 0, 'shearing_shed');
     expect(next).toBe(state);
-  });
-
-  it('returns state when paddock already has improvement', () => {
-    const state = createInitialGameState([{ displayName: 'P', isAI: false }]);
-    state.players[0].improvementTiles = ['shearing_shed'];
-    state.board.stations[0].paddocks[0].improvement = 'fence';
-
-    const next = resolvePlaceImprovement(state, 0, 0, 'shearing_shed');
-    expect(next.players[0].improvementTiles).toContain('shearing_shed');
   });
 });
 
