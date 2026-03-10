@@ -10,7 +10,7 @@ const startSchema = z.object({
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id: lobbyId } = await params;
@@ -29,14 +29,14 @@ export async function POST(
     if (lobby.hostName.toLowerCase() !== hostName.toLowerCase()) {
       return NextResponse.json(
         { error: "Only the host can start the game" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
     if (lobby.status !== "WAITING") {
       return NextResponse.json(
         { error: "Game has already started" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -44,14 +44,14 @@ export async function POST(
     if (!allReady) {
       return NextResponse.json(
         { error: "All players must be ready to start" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (lobby.players.length < 2) {
       return NextResponse.json(
         { error: "Need at least 2 players to start" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -62,7 +62,7 @@ export async function POST(
 
     const gameState = createInitialGameState(
       playerConfigs,
-      lobby.startingMoney
+      lobby.startingMoney,
     );
 
     const game = await prisma.game.create({
@@ -89,13 +89,13 @@ export async function POST(
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: error.flatten().fieldErrors },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.error("Failed to start game:", error);
     return NextResponse.json(
       { error: "Failed to start game" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

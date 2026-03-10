@@ -9,7 +9,7 @@ const joinSchema = z.object({
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id: lobbyId } = await params;
@@ -28,24 +28,21 @@ export async function POST(
     if (lobby.status !== "WAITING") {
       return NextResponse.json(
         { error: "Lobby has already started" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (lobby.players.length >= lobby.maxPlayers) {
-      return NextResponse.json(
-        { error: "Lobby is full" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Lobby is full" }, { status: 400 });
     }
 
     const existing = lobby.players.find(
-      (p) => p.displayName.toLowerCase() === displayName.toLowerCase()
+      (p) => p.displayName.toLowerCase() === displayName.toLowerCase(),
     );
     if (existing) {
       return NextResponse.json(
         { error: "A player with that name is already in the lobby" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -86,13 +83,13 @@ export async function POST(
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: error.flatten().fieldErrors },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.error("Failed to join lobby:", error);
     return NextResponse.json(
       { error: "Failed to join lobby" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

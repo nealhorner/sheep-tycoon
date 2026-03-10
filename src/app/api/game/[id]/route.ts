@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db/prisma";
 
 export async function GET(
   _request: Request,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id: gameId } = await context.params;
@@ -23,9 +23,6 @@ export async function GET(
     });
   } catch (error) {
     console.error("Failed to get game:", error);
-    return NextResponse.json(
-      { error: "Failed to get game" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to get game" }, { status: 500 });
   }
 }

@@ -20,7 +20,7 @@ describe("POST /api/game", () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ displayName: "TestPlayer" }),
-      })
+      }),
     );
     const data = await res.json();
     expect(res.status).toBe(200);
@@ -33,7 +33,7 @@ describe("POST /api/game", () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ displayName: "" }),
-      })
+      }),
     );
     expect(res.status).toBe(400);
     const data = await res.json();
@@ -46,7 +46,7 @@ describe("POST /api/game", () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({}),
-      })
+      }),
     );
     expect(res.status).toBe(200);
     expect((await res.json()).gameId).toBeDefined();

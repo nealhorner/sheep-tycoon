@@ -4,14 +4,8 @@ import { useParams } from "next/navigation";
 import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import Board from "@/components/Board/Board";
-import type {
-  GameState,
-  ImprovementTileType,
-} from "@/lib/game/types";
-import {
-  getImprovementCost,
-  IRRIGATION_COST,
-} from "@/lib/game/improvements";
+import type { GameState, ImprovementTileType } from "@/lib/game/types";
+import { getImprovementCost, IRRIGATION_COST } from "@/lib/game/improvements";
 
 export default function GamePage() {
   const params = useParams();
@@ -95,7 +89,7 @@ export default function GamePage() {
 
   async function handleAction(
     action: string,
-    payload?: { tileType?: ImprovementTileType; paddockIndex?: number }
+    payload?: { tileType?: ImprovementTileType; paddockIndex?: number },
   ) {
     setActionLoading(true);
     setError(null);
@@ -178,13 +172,11 @@ export default function GamePage() {
               Game Info
             </h2>
             <p className="mt-2 text-sm text-outback-600">
-              Phase:{" "}
-              <span className="font-medium">{gameState.phase}</span>
+              Phase: <span className="font-medium">{gameState.phase}</span>
             </p>
             {gameState.diceRoll !== null && (
               <p className="mt-1 text-sm text-outback-600">
-                Dice:{" "}
-                <span className="font-medium">{gameState.diceRoll}</span>
+                Dice: <span className="font-medium">{gameState.diceRoll}</span>
               </p>
             )}
 
@@ -205,9 +197,7 @@ export default function GamePage() {
                       <span className="ml-1 text-ochre-600">•</span>
                     )}
                   </p>
-                  <p className="mt-1 text-sm text-outback-600">
-                    ${p.money}
-                  </p>
+                  <p className="mt-1 text-sm text-outback-600">${p.money}</p>
                 </div>
               ))}
             </div>
@@ -242,7 +232,8 @@ export default function GamePage() {
                     </p>
                     {improvementTypes.map((t) => {
                       const cost = getImprovementCost(t);
-                      const canAfford = currentPlayer && currentPlayer.money >= cost;
+                      const canAfford =
+                        currentPlayer && currentPlayer.money >= cost;
                       return (
                         <button
                           key={t}
@@ -259,7 +250,9 @@ export default function GamePage() {
                       );
                     })}
                     {myStation?.paddocks.map((pad, i) =>
-                      !pad.irrigated && currentPlayer && currentPlayer.money >= IRRIGATION_COST ? (
+                      !pad.irrigated &&
+                      currentPlayer &&
+                      currentPlayer.money >= IRRIGATION_COST ? (
                         <button
                           key={i}
                           onClick={() =>
@@ -270,7 +263,7 @@ export default function GamePage() {
                         >
                           Irrigate paddock {i + 1} (${IRRIGATION_COST})
                         </button>
-                      ) : null
+                      ) : null,
                     )}
                     {currentPlayer?.improvementTiles.flatMap((tile, ti) =>
                       (myStation?.paddocks ?? [])
@@ -289,9 +282,9 @@ export default function GamePage() {
                             >
                               Place {tile.replace("_", " ")} on paddock {pi + 1}
                             </button>
-                          ) : null
+                          ) : null,
                         )
-                        .filter(Boolean)
+                        .filter(Boolean),
                     )}
                     <button
                       onClick={handleEndTurn}
@@ -310,9 +303,12 @@ export default function GamePage() {
                   Events
                 </h3>
                 <ul className="mt-1 space-y-1 text-xs text-outback-600">
-                  {[...gameState.events].reverse().slice(0, 5).map((e, i) => (
-                    <li key={i}>{e.message}</li>
-                  ))}
+                  {[...gameState.events]
+                    .reverse()
+                    .slice(0, 5)
+                    .map((e, i) => (
+                      <li key={i}>{e.message}</li>
+                    ))}
                 </ul>
               </div>
             )}

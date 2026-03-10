@@ -57,7 +57,12 @@ describe("resolveTuckerBag", () => {
   it("Good Season adds $100", () => {
     const state = createInitialGameState([{ displayName: "P", isAI: false }]);
     state.decks.tuckerBag = [
-      { id: "1", type: "tucker_bag", title: "Good Season", effect: "Gain $100" },
+      {
+        id: "1",
+        type: "tucker_bag",
+        title: "Good Season",
+        effect: "Gain $100",
+      },
     ];
 
     const next = resolveTuckerBag(state, 0);
@@ -143,7 +148,7 @@ describe("resolveStudRam", () => {
     const next = resolveStudRam(state, 0);
     const totalSheep = next.board.stations[0].paddocks.reduce(
       (s, p) => s + p.sheepCount,
-      0
+      0,
     );
     expect(totalSheep).toBeGreaterThan(15);
     expect(next.events[0].message).toContain("Stud Ram");

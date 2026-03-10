@@ -4,7 +4,10 @@ type LobbyConnection = { write: (data: string) => void };
 
 const lobbyConnections = new Map<string, Set<LobbyConnection>>();
 
-export function addLobbyListener(lobbyId: string, conn: LobbyConnection): () => void {
+export function addLobbyListener(
+  lobbyId: string,
+  conn: LobbyConnection,
+): () => void {
   if (!lobbyConnections.has(lobbyId)) {
     lobbyConnections.set(lobbyId, new Set());
   }
@@ -34,7 +37,10 @@ type GameConnection = { write: (data: string) => void };
 
 const gameConnections = new Map<string, Set<GameConnection>>();
 
-export function addGameListener(gameId: string, conn: GameConnection): () => void {
+export function addGameListener(
+  gameId: string,
+  conn: GameConnection,
+): () => void {
   if (!gameConnections.has(gameId)) {
     gameConnections.set(gameId, new Set());
   }

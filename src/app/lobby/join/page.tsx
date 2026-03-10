@@ -86,9 +86,7 @@ export default function JoinLobbyPage() {
               maxLength={50}
             />
           </div>
-          {error && (
-            <p className="text-sm text-red-600">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-600">{error}</p>}
           <div className="flex gap-4">
             <button
               type="submit"

@@ -44,13 +44,13 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: error.flatten().fieldErrors },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.error("Failed to create lobby:", error);
     return NextResponse.json(
       { error: "Failed to create lobby" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

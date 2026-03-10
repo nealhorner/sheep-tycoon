@@ -1,9 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import {
-  createInitialGameState,
-  processRoll,
-  processMove,
-} from "./engine";
+import { createInitialGameState, processRoll, processMove } from "./engine";
 import type { GameState } from "./types";
 
 describe("createInitialGameState", () => {
@@ -76,7 +72,7 @@ describe("createInitialGameState", () => {
   it("uses custom starting money", () => {
     const state = createInitialGameState(
       [{ displayName: "P", isAI: false }],
-      5000
+      5000,
     );
     expect(state.players[0].money).toBe(5000);
   });
@@ -147,7 +143,7 @@ describe("processMove", () => {
 
   it("resolves loan space - adds $500", () => {
     const loanIndex = baseState.board.trackSpaces.findIndex(
-      (s) => s.type === "loan"
+      (s) => s.type === "loan",
     );
     expect(loanIndex).toBeGreaterThanOrEqual(0);
     baseState.diceRoll = loanIndex;
@@ -159,7 +155,7 @@ describe("processMove", () => {
 
   it("resolves collect_wool - no income without shearing shed", () => {
     const idx = baseState.board.trackSpaces.findIndex(
-      (s) => s.type === "collect_wool"
+      (s) => s.type === "collect_wool",
     );
     baseState.diceRoll = idx;
     baseState.players[0].trackPosition = 0;
@@ -169,7 +165,7 @@ describe("processMove", () => {
 
   it("resolves collect_wool - income with shearing shed", () => {
     const idx = baseState.board.trackSpaces.findIndex(
-      (s) => s.type === "collect_wool"
+      (s) => s.type === "collect_wool",
     );
     baseState.board.stations[0].paddocks[0].improvement = "shearing_shed";
     baseState.board.stations[0].paddocks[0].sheepCount = 3;
@@ -181,7 +177,7 @@ describe("processMove", () => {
 
   it("resolves wool_sale when hasPassedWoolSale", () => {
     const idx = baseState.board.trackSpaces.findIndex(
-      (s) => s.type === "wool_sale"
+      (s) => s.type === "wool_sale",
     );
     baseState.players[0].hasPassedWoolSale = true;
     baseState.board.stations[0].paddocks[0].improvement = "shearing_shed";
@@ -195,7 +191,7 @@ describe("processMove", () => {
 
   it("tucker_bag reduces deck size", () => {
     const idx = baseState.board.trackSpaces.findIndex(
-      (s) => s.type === "tucker_bag"
+      (s) => s.type === "tucker_bag",
     );
     const initialDeckSize = baseState.decks.tuckerBag.length;
     baseState.diceRoll = idx;
@@ -207,7 +203,7 @@ describe("processMove", () => {
 
   it("stock_sale reduces deck size", () => {
     const idx = baseState.board.trackSpaces.findIndex(
-      (s) => s.type === "stock_sale"
+      (s) => s.type === "stock_sale",
     );
     const initialDeckSize = baseState.decks.stockSale.length;
     baseState.diceRoll = idx;

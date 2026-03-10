@@ -10,7 +10,7 @@ const readySchema = z.object({
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id: lobbyId } = await params;
@@ -28,7 +28,7 @@ export async function POST(
     if (!player) {
       return NextResponse.json(
         { error: "Player not found in lobby" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -66,13 +66,13 @@ export async function POST(
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: error.flatten().fieldErrors },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.error("Failed to toggle ready:", error);
     return NextResponse.json(
       { error: "Failed to toggle ready" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
