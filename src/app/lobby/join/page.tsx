@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function JoinLobbyPage() {
-  const [lobbyId, setLobbyId] = useState("");
-  const [displayName, setDisplayName] = useState("");
+  const [lobbyId, setLobbyId] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -14,29 +14,29 @@ export default function JoinLobbyPage() {
   async function handleJoin(e: React.FormEvent) {
     e.preventDefault();
     if (!lobbyId.trim()) {
-      setError("Please enter the lobby code");
+      setError('Please enter the lobby code');
       return;
     }
     if (!displayName.trim()) {
-      setError("Please enter your name");
+      setError('Please enter your name');
       return;
     }
     setLoading(true);
     setError(null);
     try {
       const res = await fetch(`/api/lobby/${lobbyId.trim()}/join`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ displayName: displayName.trim() }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to join lobby");
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("lobbyDisplayName", displayName.trim());
+      if (!res.ok) throw new Error(data.error || 'Failed to join lobby');
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('lobbyDisplayName', displayName.trim());
       }
       router.push(`/lobby/${lobbyId.trim()}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -45,18 +45,11 @@ export default function JoinLobbyPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-outback-50 to-outback-100 px-6 py-16">
       <div className="mx-auto max-w-md">
-        <h1 className="font-display text-3xl font-bold text-outback-900">
-          Join Lobby
-        </h1>
-        <p className="mt-2 text-outback-600">
-          Enter the lobby code and your name to join a game.
-        </p>
+        <h1 className="font-display text-3xl font-bold text-outback-900">Join Lobby</h1>
+        <p className="mt-2 text-outback-600">Enter the lobby code and your name to join a game.</p>
         <form onSubmit={handleJoin} className="mt-8 space-y-4">
           <div>
-            <label
-              htmlFor="lobbyId"
-              className="block text-sm font-medium text-outback-700"
-            >
+            <label htmlFor="lobbyId" className="block text-sm font-medium text-outback-700">
               Lobby code
             </label>
             <input
@@ -70,10 +63,7 @@ export default function JoinLobbyPage() {
             />
           </div>
           <div>
-            <label
-              htmlFor="displayName"
-              className="block text-sm font-medium text-outback-700"
-            >
+            <label htmlFor="displayName" className="block text-sm font-medium text-outback-700">
               Your name
             </label>
             <input
@@ -93,7 +83,7 @@ export default function JoinLobbyPage() {
               disabled={loading}
               className="flex-1 rounded-xl bg-ochre-500 px-6 py-3 font-semibold text-white transition hover:bg-ochre-600 disabled:opacity-50"
             >
-              {loading ? "Joining…" : "Join Lobby"}
+              {loading ? 'Joining…' : 'Join Lobby'}
             </button>
             <Link
               href="/"

@@ -6,12 +6,7 @@ export interface TrackPoint {
   angle: number; // for orienting space labels
 }
 
-export function getTrackPositions(
-  centerX: number,
-  centerY: number,
-  radius: number,
-  count: number,
-): TrackPoint[] {
+export function getTrackPositions(centerX: number, centerY: number, radius: number, count: number): TrackPoint[] {
   const points: TrackPoint[] = [];
   const startAngle = -Math.PI / 2; // Start at top
 

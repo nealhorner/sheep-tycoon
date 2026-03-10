@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
-import Link from "next/link";
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState, useCallback } from 'react';
+import Link from 'next/link';
 
 interface LobbyPlayer {
   id: string;
@@ -27,10 +27,10 @@ export default function LobbyPage() {
 
   const [lobby, setLobby] = useState<LobbyState | null>(null);
   const [displayName, setDisplayName] = useState(() => {
-    if (typeof window !== "undefined") {
-      return sessionStorage.getItem("lobbyDisplayName") ?? "";
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('lobbyDisplayName') ?? '';
     }
-    return "";
+    return '';
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,15 +40,15 @@ export default function LobbyPage() {
     try {
       const res = await fetch(`/api/lobby/${lobbyId}`);
       if (!res.ok) {
-        if (res.status === 404) throw new Error("Lobby not found");
-        throw new Error("Failed to load lobby");
+        if (res.status === 404) throw new Error('Lobby not found');
+        throw new Error('Failed to load lobby');
       }
       const data = await res.json();
       setLobby(data);
       setError(null);
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load");
+      setError(err instanceof Error ? err.message : 'Failed to load');
       setLobby(null);
       return null;
     } finally {
@@ -67,10 +67,10 @@ export default function LobbyPage() {
     es.onmessage = (e) => {
       try {
         const msg = JSON.parse(e.data);
-        if (msg.type === "lobby_update" && msg.lobby) {
+        if (msg.type === 'lobby_update' && msg.lobby) {
           setLobby(msg.lobby);
         }
-        if (msg.type === "game_started" && msg.gameId) {
+        if (msg.type === 'game_started' && msg.gameId) {
           router.push(`/game/${msg.gameId}`);
         }
       } catch {
@@ -82,34 +82,30 @@ export default function LobbyPage() {
   }, [lobbyId, lobby, router]);
 
   async function handleReady(displayName: string) {
-    const player = lobby?.players.find(
-      (p) => p.displayName.toLowerCase() === displayName.toLowerCase(),
-    );
+    const player = lobby?.players.find((p) => p.displayName.toLowerCase() === displayName.toLowerCase());
     if (!player) return;
     setActionLoading(true);
     try {
       const res = await fetch(`/api/lobby/${lobbyId}/ready`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           displayName: player.displayName,
           ready: !player.ready,
         }),
       });
-      if (!res.ok) throw new Error("Failed to toggle ready");
+      if (!res.ok) throw new Error('Failed to toggle ready');
       const data = await res.json();
       setLobby((prev) =>
         prev
           ? {
               ...prev,
-              players: prev.players.map((p) =>
-                p.id === player.id ? { ...p, ready: data.ready } : p,
-              ),
+              players: prev.players.map((p) => (p.id === player.id ? { ...p, ready: data.ready } : p)),
             }
-          : null,
+          : null
       );
     } catch {
-      setError("Failed to update ready status");
+      setError('Failed to update ready status');
     } finally {
       setActionLoading(false);
     }
@@ -119,24 +115,22 @@ export default function LobbyPage() {
     setActionLoading(true);
     try {
       const res = await fetch(`/api/lobby/${lobbyId}/start`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ hostName }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to start");
+      if (!res.ok) throw new Error(data.error || 'Failed to start');
       router.push(`/game/${data.gameId}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to start game");
+      setError(err instanceof Error ? err.message : 'Failed to start game');
     } finally {
       setActionLoading(false);
     }
   }
 
-  const allReady =
-    lobby && lobby.players.length >= 2 && lobby.players.every((p) => p.ready);
-  const isHost =
-    lobby && displayName.toLowerCase() === lobby.hostName.toLowerCase();
+  const allReady = lobby && lobby.players.length >= 2 && lobby.players.every((p) => p.ready);
+  const isHost = lobby && displayName.toLowerCase() === lobby.hostName.toLowerCase();
 
   if (loading) {
     return (
@@ -149,11 +143,8 @@ export default function LobbyPage() {
   if (error || !lobby) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-outback-50 px-6">
-        <p className="text-red-600">{error || "Lobby not found"}</p>
-        <Link
-          href="/lobby"
-          className="rounded-xl bg-ochre-500 px-6 py-3 font-semibold text-white hover:bg-ochre-600"
-        >
+        <p className="text-red-600">{error || 'Lobby not found'}</p>
+        <Link href="/lobby" className="rounded-xl bg-ochre-500 px-6 py-3 font-semibold text-white hover:bg-ochre-600">
           Back to Lobby
         </Link>
       </main>
@@ -164,28 +155,22 @@ export default function LobbyPage() {
     <main className="min-h-screen bg-gradient-to-b from-outback-50 to-outback-100 px-6 py-12">
       <div className="mx-auto max-w-2xl">
         <div className="rounded-2xl bg-white/90 p-8 shadow-lg backdrop-blur">
-          <h1 className="font-display text-2xl font-bold text-outback-900">
-            Lobby: {lobby.id}
-          </h1>
+          <h1 className="font-display text-2xl font-bold text-outback-900">Lobby: {lobby.id}</h1>
           <p className="mt-1 text-outback-600">
-            Share this code with friends:{" "}
-            <span className="font-mono text-lg font-semibold text-ochre-600">
-              {lobby.id}
-            </span>
+            Share this code with friends:{' '}
+            <span className="font-mono text-lg font-semibold text-ochre-600">{lobby.id}</span>
           </p>
 
           <div className="mt-6">
-            <label className="block text-sm font-medium text-outback-700">
-              Your display name (to take actions)
-            </label>
+            <label className="block text-sm font-medium text-outback-700">Your display name (to take actions)</label>
             <input
               type="text"
               value={displayName}
               onChange={(e) => {
                 const v = e.target.value;
                 setDisplayName(v);
-                if (typeof window !== "undefined") {
-                  sessionStorage.setItem("lobbyDisplayName", v);
+                if (typeof window !== 'undefined') {
+                  sessionStorage.setItem('lobbyDisplayName', v);
                 }
               }}
               placeholder="Enter your name"
@@ -199,49 +184,33 @@ export default function LobbyPage() {
             </h2>
             <ul className="mt-4 space-y-2">
               {lobby.players.map((p) => (
-                <li
-                  key={p.id}
-                  className="flex items-center justify-between rounded-lg bg-outback-50 px-4 py-3"
-                >
+                <li key={p.id} className="flex items-center justify-between rounded-lg bg-outback-50 px-4 py-3">
                   <span className="font-medium text-outback-800">
                     {p.displayName}
-                    {p.displayName.toLowerCase() ===
-                      lobby.hostName.toLowerCase() && (
-                      <span className="ml-2 text-xs text-ochre-600">
-                        (Host)
-                      </span>
+                    {p.displayName.toLowerCase() === lobby.hostName.toLowerCase() && (
+                      <span className="ml-2 text-xs text-ochre-600">(Host)</span>
                     )}
                   </span>
-                  <span
-                    className={p.ready ? "text-green-600" : "text-outback-400"}
-                  >
-                    {p.ready ? "Ready" : "Not ready"}
+                  <span className={p.ready ? 'text-green-600' : 'text-outback-400'}>
+                    {p.ready ? 'Ready' : 'Not ready'}
                   </span>
-                  {displayName &&
-                    p.displayName.toLowerCase() ===
-                      displayName.toLowerCase() && (
-                      <button
-                        onClick={() => handleReady(displayName)}
-                        disabled={actionLoading}
-                        className="rounded-lg border border-outback-300 px-3 py-1 text-sm font-medium text-outback-700 hover:bg-outback-100 disabled:opacity-50"
-                      >
-                        {lobby.players.find(
-                          (x) =>
-                            x.displayName.toLowerCase() ===
-                            displayName.toLowerCase(),
-                        )?.ready
-                          ? "Unready"
-                          : "Ready"}
-                      </button>
-                    )}
+                  {displayName && p.displayName.toLowerCase() === displayName.toLowerCase() && (
+                    <button
+                      onClick={() => handleReady(displayName)}
+                      disabled={actionLoading}
+                      className="rounded-lg border border-outback-300 px-3 py-1 text-sm font-medium text-outback-700 hover:bg-outback-100 disabled:opacity-50"
+                    >
+                      {lobby.players.find((x) => x.displayName.toLowerCase() === displayName.toLowerCase())?.ready
+                        ? 'Unready'
+                        : 'Ready'}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
           </div>
 
-          <p className="mt-4 text-sm text-outback-500">
-            Starting money: ${lobby.startingMoney}
-          </p>
+          <p className="mt-4 text-sm text-outback-500">Starting money: ${lobby.startingMoney}</p>
 
           {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
 
@@ -252,14 +221,10 @@ export default function LobbyPage() {
                 disabled={!allReady || actionLoading}
                 className="flex-1 rounded-xl bg-ochre-500 px-6 py-3 font-semibold text-white transition hover:bg-ochre-600 disabled:opacity-50"
               >
-                {actionLoading ? "Starting…" : "Start Game"}
+                {actionLoading ? 'Starting…' : 'Start Game'}
               </button>
             )}
-            {!allReady && isHost && (
-              <p className="text-sm text-outback-500">
-                All players must be ready
-              </p>
-            )}
+            {!allReady && isHost && <p className="text-sm text-outback-500">All players must be ready</p>}
             <Link
               href="/lobby"
               className="rounded-xl border border-outback-300 px-6 py-3 font-semibold text-outback-700 hover:bg-outback-50"

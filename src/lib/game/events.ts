@@ -1,5 +1,5 @@
-import type { GameState, Card } from "./types";
-import { drawCard } from "./cards";
+import type { GameState, Card } from './types';
+import { drawCard } from './cards';
 
 export function addEvent(state: GameState, message: string): GameState {
   return {
@@ -8,42 +8,34 @@ export function addEvent(state: GameState, message: string): GameState {
   };
 }
 
-export function resolveCollectWool(
-  state: GameState,
-  playerIndex: number,
-): GameState {
+export function resolveCollectWool(state: GameState, playerIndex: number): GameState {
   const player = state.players[playerIndex];
   const station = state.board.stations[player.stationId];
   if (!player || !station) return state;
 
   const woolCount = station.paddocks.reduce((sum, pad) => {
-    if (pad.improvement === "shearing_shed" && pad.sheepCount > 0) {
+    if (pad.improvement === 'shearing_shed' && pad.sheepCount > 0) {
       return sum + pad.sheepCount;
     }
     return sum;
   }, 0);
 
   const income = woolCount * state.market.woolPrice;
-  const updatedPlayers = state.players.map((p, i) =>
-    i === playerIndex ? { ...p, money: p.money + income } : p,
-  );
+  const updatedPlayers = state.players.map((p, i) => (i === playerIndex ? { ...p, money: p.money + income } : p));
 
   return addEvent(
     { ...state, players: updatedPlayers },
-    `${player.displayName} collected $${income} wool (${woolCount} sheep)`,
+    `${player.displayName} collected $${income} wool (${woolCount} sheep)`
   );
 }
 
-export function resolveWoolSale(
-  state: GameState,
-  playerIndex: number,
-): GameState {
+export function resolveWoolSale(state: GameState, playerIndex: number): GameState {
   const player = state.players[playerIndex];
   if (!player || !player.hasPassedWoolSale) return state;
 
   const station = state.board.stations[player.stationId];
   const woolCount = station.paddocks.reduce((sum, pad) => {
-    if (pad.improvement === "shearing_shed" && pad.sheepCount > 0) {
+    if (pad.improvement === 'shearing_shed' && pad.sheepCount > 0) {
       return sum + pad.sheepCount;
     }
     return sum;
@@ -51,21 +43,13 @@ export function resolveWoolSale(
 
   const income = woolCount * state.market.woolPrice;
   const updatedPlayers = state.players.map((p, i) =>
-    i === playerIndex
-      ? { ...p, money: p.money + income, hasPassedWoolSale: false }
-      : p,
+    i === playerIndex ? { ...p, money: p.money + income, hasPassedWoolSale: false } : p
   );
 
-  return addEvent(
-    { ...state, players: updatedPlayers },
-    `${player.displayName} wool sale: $${income}`,
-  );
+  return addEvent({ ...state, players: updatedPlayers }, `${player.displayName} wool sale: $${income}`);
 }
 
-export function resolveTuckerBag(
-  state: GameState,
-  playerIndex: number,
-): GameState {
+export function resolveTuckerBag(state: GameState, playerIndex: number): GameState {
   const { card, deck: newDeck } = drawCard(state.decks.tuckerBag);
   if (!card) return state;
 
@@ -73,12 +57,9 @@ export function resolveTuckerBag(
     ...state,
     decks: { ...state.decks, tuckerBag: newDeck },
   };
-  newState = addEvent(
-    newState,
-    `${state.players[playerIndex].displayName} drew: ${card.title}`,
-  );
+  newState = addEvent(newState, `${state.players[playerIndex].displayName} drew: ${card.title}`);
 
-  if (card.title === "Drought") {
+  if (card.title === 'Drought') {
     const player = newState.players[playerIndex];
     const station = newState.board.stations[player.stationId];
     const stations = newState.board.stations.map((s, si) => {
@@ -87,32 +68,23 @@ export function resolveTuckerBag(
         ...s,
         paddocks: s.paddocks.map((pad) => ({
           ...pad,
-          sheepCount: pad.irrigated
-            ? pad.sheepCount
-            : Math.max(0, pad.sheepCount - 2),
+          sheepCount: pad.irrigated ? pad.sheepCount : Math.max(0, pad.sheepCount - 2),
         })),
       };
     });
     newState = { ...newState, board: { ...newState.board, stations } };
-  } else if (card.title === "Good Season") {
-    const updatedPlayers = newState.players.map((p, i) =>
-      i === playerIndex ? { ...p, money: p.money + 100 } : p,
-    );
+  } else if (card.title === 'Good Season') {
+    const updatedPlayers = newState.players.map((p, i) => (i === playerIndex ? { ...p, money: p.money + 100 } : p));
     newState = { ...newState, players: updatedPlayers };
-  } else if (card.title === "Flood") {
-    const updatedPlayers = newState.players.map((p, i) =>
-      i === playerIndex ? { ...p, money: p.money + 200 } : p,
-    );
+  } else if (card.title === 'Flood') {
+    const updatedPlayers = newState.players.map((p, i) => (i === playerIndex ? { ...p, money: p.money + 200 } : p));
     newState = { ...newState, players: updatedPlayers };
   }
 
   return newState;
 }
 
-export function resolveStockSale(
-  state: GameState,
-  playerIndex: number,
-): GameState {
+export function resolveStockSale(state: GameState, playerIndex: number): GameState {
   const { card, deck: newDeck } = drawCard(state.decks.stockSale);
   if (!card) return state;
 
@@ -120,17 +92,14 @@ export function resolveStockSale(
     ...state,
     decks: { ...state.decks, stockSale: newDeck },
   };
-  newState = addEvent(
-    newState,
-    `${state.players[playerIndex].displayName} drew: ${card.title}`,
-  );
+  newState = addEvent(newState, `${state.players[playerIndex].displayName} drew: ${card.title}`);
 
-  if (card.title === "Wool Price Up") {
+  if (card.title === 'Wool Price Up') {
     newState = {
       ...newState,
       market: { ...newState.market, woolPrice: newState.market.woolPrice + 2 },
     };
-  } else if (card.title === "Wool Price Down") {
+  } else if (card.title === 'Wool Price Down') {
     newState = {
       ...newState,
       market: {
@@ -138,7 +107,7 @@ export function resolveStockSale(
         woolPrice: Math.max(2, newState.market.woolPrice - 2),
       },
     };
-  } else if (card.title === "Sheep Price Up") {
+  } else if (card.title === 'Sheep Price Up') {
     newState = {
       ...newState,
       market: {
@@ -146,7 +115,7 @@ export function resolveStockSale(
         sheepPrice: newState.market.sheepPrice + 1,
       },
     };
-  } else if (card.title === "Sheep Price Down") {
+  } else if (card.title === 'Sheep Price Down') {
     newState = {
       ...newState,
       market: {
@@ -159,10 +128,7 @@ export function resolveStockSale(
   return newState;
 }
 
-export function resolveStudRam(
-  state: GameState,
-  playerIndex: number,
-): GameState {
+export function resolveStudRam(state: GameState, playerIndex: number): GameState {
   const { card, deck: newDeck } = drawCard(state.decks.studRam);
   if (!card) return state;
 
@@ -193,18 +159,13 @@ export function resolveStudRam(
     }
   }
 
-  return addEvent(
-    newState,
-    `${player.displayName} drew Stud Ram: +${newSheep} sheep`,
-  );
+  return addEvent(newState, `${player.displayName} drew Stud Ram: +${newSheep} sheep`);
 }
 
 export function resolveLoan(state: GameState, playerIndex: number): GameState {
-  const updatedPlayers = state.players.map((p, i) =>
-    i === playerIndex ? { ...p, money: p.money + 500 } : p,
-  );
+  const updatedPlayers = state.players.map((p, i) => (i === playerIndex ? { ...p, money: p.money + 500 } : p));
   return addEvent(
     { ...state, players: updatedPlayers },
-    `${state.players[playerIndex].displayName} took a loan of $500`,
+    `${state.players[playerIndex].displayName} took a loan of $500`
   );
 }
